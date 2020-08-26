@@ -1,0 +1,486 @@
+/****************************************
+ *	extern.h							*
+ ****************************************/
+
+#include	"define.h"
+
+typedef	unsigned	char	uchar;
+typedef	unsigned	short	ushort;
+typedef	unsigned	int		uint;
+typedef	unsigned	long	ulong;
+
+extern	const	uchar	recStartTime[8];						//0x0000
+extern	const	uchar	recStopTime[8];							//0x0008
+extern	const	uchar	sampCount[5+11];						//0x0010
+extern	const	uchar	unitSerialNoMaster[20+12];				//0x0020
+extern	const	uchar	unitSerialNoSlave[20+12];				//0x0020
+extern	const	uchar	verNo[2+14];							//0x0040
+extern	const	uchar	sdCapa[6+10];							//0x0050
+extern	const	uchar	recordPoint[12+4];						//0x0060
+extern	const	uchar	temperature[2+6];						//0x0070
+extern	const	uchar	humidity[2+6];							//0x0078
+extern	const	uchar	statuCode[1+15];						//0x0080
+extern	const	uchar	channelEnable[8];						//0x0090
+extern	const	uchar	decimation[1+7];						//0x0098
+extern	const	uchar	adPGA[8];								//0x00A0
+extern	const	uchar	recCapaSet[1+7];						//0x00A8
+extern	const	uchar	modeSet[1+15];							//0x00B0
+extern	const	uchar	recTimeSet[1+7];						//0x00C0
+extern	const	uchar	preRecTimeSet[1+7];						//0x00C8
+extern	const	uchar	turiggerSet[48];						//0x00D0
+extern	const	uchar	turiggerRelease[48];					//0x0100
+extern	const	uchar	adOffset[48];							//0x0130
+extern	const	uchar	adGain[48];								//0x0160
+//extern	const	uchar	reserve[112];						//0x0190
+extern	const	uchar	sample[384]	;							//0x0200
+extern	const	uchar	svParaDef[SV_COUNT];
+extern	const	uchar	svParaDeUnitSerialNoMaster[20];
+extern	const	uchar	svParaDeUnitSerialNoSlave[20];
+
+//extern	const	uchar	OKMSG[4];
+//extern	const	uchar	NGMSG[4];
+
+extern	const	uchar	startCMD[5];
+extern	const	uchar	stopCMD[4];
+extern	const	uchar	resetCMD[5];
+extern	const	uchar	listCMD[4];
+extern	const	uchar	dataCMD[4];
+extern	const	uchar	parasetCMD[7];
+extern	const	uchar	paragetCMD[7];
+extern	const	uchar	offsetCMD[6];
+extern	const	uchar	gainCMD[4];
+extern	const	uchar	daytimeCMD[7];
+extern	const	uchar	selftestCMD[8];
+extern	const	uchar	statusCMD[6];
+
+extern	const	uchar	gprmcCMD[5];
+extern	const	uchar	gpzgaCMD[5];
+extern	const	uchar	gpggaCMD[5];
+
+extern	const	uchar	DefDate[];
+
+//extern	const RTC_C_Calendar currentTime;
+
+extern	const	uchar	sramCheck[];
+
+extern	uint	unitType;
+
+extern	uint	sdBufAdr;
+extern	uint	adBufAdr;
+extern	uint	reSampleSetValue;
+extern	uint	reSampleLFSetValue;
+extern	uint	reSampleCount;
+extern	uint	adpcmUse;
+extern	uchar	adWorkBuf[AD_DATA_COUNT];
+extern	uchar	sdBuf[SD_BUFF_LENGTH];
+extern	uchar	adBuf[AD_BUF_LENGTH];
+extern	uchar	sdReadBuf[SD_READ_SIZE];
+extern	uchar	sdWorkReadBuf[SD_BLOCK_SIZE];								//512		0x0200
+extern	uchar	sdWriteBuf[SD_BLOCK_SIZE];
+//extern	uchar	testReadBuf[SD_BLOCK_SIZE * SD_WRITE_SECTOR];				//512*6		0x0c00
+extern	uchar	usbWriteBuf[USB_WRITE_DEF_LENGTH];
+extern	uchar	usbHeaderBuf[USB_HEADER_LENGTH];
+extern	uchar	usbWorkBuf[SD_BLOCK_SIZE];
+extern	uint	testReadAdr;
+extern	uint	testPointer1;
+extern	uint	testPointer2;
+extern	uint	startAdr;
+extern	uint	endAdr;
+extern	uint	usbStartAdr;
+extern	uint	usbEndAdr;
+extern	uint	usbStartCount;
+extern	uint	sramSaveStartAdr;
+extern	uint	sramSaveEndAdr;
+extern	uint	sramLoadStartAdr;
+extern	uint	sramLoadEndAdr;
+extern	ulong	sdMainCount;
+extern	uint	usbWriteCountSV;
+
+extern	uchar*	writeBufAdr;
+extern	uchar	writeInstADRBuf[SRAM_INST_ADR_LENGTH];
+extern	uchar*	readBufAdr;
+extern	uchar	readInstADRBuf[SRAM_INST_ADR_LENGTH];
+extern	uchar	sramWorkReadBuf[SRAM_READ_LENGTH];
+extern	uchar	sramWriteBuf[SRAM_WRITE_BUF_LENGTH];
+extern	uchar	sramReadBuf[SRAM_LOAD_LENGTH];
+extern	uint	sramSel;
+extern	ulong	sramAdr;
+extern	ulong	sramReadAdr;
+extern	uchar	sramAdrHi;
+extern	uchar	sramAdrMid;
+extern	uchar	sramAdrLow;
+extern	uint	sramSaveStep;
+extern	uint	sramLoadStep;
+extern	uint	sramLoadSubStep;
+extern	uchar	dummyData;
+extern	uint	dataPoint;
+extern	uint	writeSRAMStatus;
+extern	uint	readSRAMStatus;
+extern	uint	writeSRAMDMAStatus;
+extern	uint	readSRAMDMAStatus;
+extern	uint	readSRAMDMAFlag;
+
+extern	uint	cmdWait;
+extern	uchar	cmdBuf[CMDLENGTH];
+extern	uint	cmdStep;
+extern	uint	cmdTransStep;
+extern	uint	cmdReq;
+extern	uint	cmdBusy;
+extern	uint	cmdOK;
+extern	uint	cmdDataTrans;
+
+extern	const	uint	OKStatus;
+extern	const	uint	NGStatus;
+
+extern	uint	adStart;
+extern	uint	sdStart;
+extern	uint	sramStart;
+extern	uint	usbStart;
+extern	uint	timeGet;
+extern	uint	altGet;
+extern	uint	dataStart;
+extern	uint	dataSendStep;
+extern	uint	dataPakeCnt;
+extern	uint	sync1PPSFlag;
+extern	uint	syncStartFlag;
+extern	uint	syncRsvFlag;
+extern	uint	syncStartCounter;
+extern	uint	syncMeasureStart;
+extern	uint	syncWaitFlag;
+
+extern	uchar	rtcDefault;
+
+extern	uchar	svBuf[SYSTEM_SV_COUNT];
+extern	uchar	recordIndexBuf[INDEX_POINTER];
+extern	uint	indexCount;
+extern	uchar	indexDatePointer;
+extern	uchar	indexDate[MAX_DATA_INDEX][8];
+extern	uint	indexAdrBuf[MAX_DATA_INDEX];
+extern	uchar	indexStoreDate[8];
+//extern	uchar	testBuf[0x800];
+//extern	uchar	testBuf[0x1000];
+//extern	uchar	testData;
+
+extern	uint	gpsCtr;
+extern	uint	gpsPoint;
+extern	uint	gpsLength;
+extern	uchar	gpsTempBuffer[GPSBUFSIZE];
+extern	uchar	gpsBuffer[GPSBUFSIZE];
+
+extern	struct	dateTime
+{
+	uint	year;
+	uint	month;
+	uint	day;
+	uint	dayOfmonth;
+	uint	dayOfWeek;
+	uint	hours;
+	uint	minutes;
+	uint	seconds;
+} dateTime;
+
+extern	struct	recPoint
+{
+	uint	lat_h;
+	uint	lat_l;
+	uint	lng_h;
+	uint	lng_l;
+	uint	alt;
+} recPoint;
+
+extern	struct	trigger
+{
+	ulong	AVGCh0;
+	ulong	AVGCh1;
+	ulong	AVGCh2;
+	ulong	AVGCh3;
+	ulong	AVGCh4;
+	ulong	AVGCh5;
+	ulong	AVGCh6;
+	ulong	AVGCh7;
+	ulong	SVCh0;
+	ulong	SVCh1;
+	ulong	SVCh2;
+	ulong	SVCh3;
+	ulong	SVCh4;
+	ulong	SVCh5;
+	ulong	SVCh6;
+	ulong	SVCh7;
+}	trigger;
+extern	uint	triggerSel;
+extern	uint	triggerAdr;
+extern	uchar	triggerBuf[3*8*10];
+
+extern	struct	Timer
+{
+	ulong	timer0;												// Command TimeOut
+	uint	timer1;												// Reserve
+	ulong	timer2;												// ”Ä—p Timer
+	uint	timer3;												// Reserve
+	uint	timer4;												// Reserve
+	uint	timer5;												// Reserve
+	uint	timer6;												// Reserve
+	uint	timer7;												// Reserve
+	uint	timer8;												// Reserve
+	uint	timer9;												// Reserve
+	uint	timerA;												// Reserve
+	uint	timerB;												// Reserve
+	uint	timerC;												// Reserve
+	uint	timerD;												// Reserve
+	uint	timerE;												// Reserve
+	uint	timerF;												// Reserve
+} Timer;
+
+extern	uint	time01MS;
+extern	uint	time1250US;
+extern	uint	time02MS;
+extern	uint	time05MS;
+extern	uint	time10MS;
+extern	uint	time16MS;
+extern	uint	time20MS;
+extern	uint	time40MS;
+extern	uint	time100MS;
+extern	uint	time200MS;
+extern	uint	time1S;
+extern	uint	time60S;
+
+extern	uint	eventTime01MS;
+extern	uint	eventTime1250US;
+extern	uint	eventTime02MS;
+extern	uint	eventTime05MS;
+extern	uint	eventTime10MS;
+extern	uint	eventTime16MS;
+extern	uint	eventTime20MS;
+extern	uint	eventTime40MS;
+extern	uint	eventTime100MS;
+extern	uint	eventTime200MS;
+extern	uint	eventTime1S;
+extern	uint	eventTime60S;
+
+extern	struct	readAdRegStatus
+{
+	uint				r00;									//Ch0
+	uint				r01;									//Ch1
+	uint				r02;									//Ch2
+	uint				r03;									//Ch3
+	uint				r04;									//Ch4
+	uint				r05;									//Ch5
+	uint				r06;									//Ch6
+	uint				r07;									//Ch7
+	uint				r08;									//Disable ADC Channel
+	uint				r09;									//
+	uint				r0a;									//
+	uint				r0b;									//
+	uint				r0c;									//
+	uint				r0d;									//
+	uint				r0e;									//
+	uint				r0f;									//
+	uint				r10;									//
+	uint				r11;									//
+	uint				r12;									//
+	uint				r13;									//
+	uint				r14;									//Data Output Format
+	uint				r15;									//
+	uint				r16;									//
+	uint				r17;									//
+	uint				r18;									//
+	uint				r19;									//
+	uint				r1a;									//
+	uint				r1b;									//
+	uint				r1c;									//
+	uint				r1d;									//
+	uint				r1e;									//
+	uint				r1f;									//
+	uint				r20;									//
+	uint				r21;									//
+	uint				r22;									//
+	uint				r23;									//
+	uint				r24;									//
+	uint				r25;									//
+	uint				r26;									//
+	uint				r27;									//
+	uint				r28;									//
+	uint				r29;									//
+	uint				r2a;									//
+	uint				r2b;									//
+	uint				r2c;									//
+	uint				r2d;									//
+	uint				r2e;									//
+	uint				r2f;									//
+	uint				r30;									//
+	uint				r31;									//
+	uint				r32;									//
+	uint				r33;									//
+	uint				r34;									//
+	uint				r35;									//
+	uint				r36;									//
+	uint				r37;									//
+	uint				r38;									//
+	uint				r39;									//
+	uint				r3a;									//
+	uint				r3b;									//
+	uint				r3c;									//
+	uint				r3d;									//
+	uint				r3e;									//
+	uint				r3f;									//
+	uint				r40;									//
+	uint				r41;									//
+	uint				r42;									//
+	uint				r43;									//
+	uint				r44;									//
+	uint				r45;									//
+	uint				r46;									//
+	uint				r47;									//
+	uint				r48;									//
+	uint				r49;									//
+	uint				r4a;									//
+	uint				r4b;									//
+	uint				r4c;
+	uint				r4d;
+	uint				r4e;
+	uint				r4f;
+	uint				r50;
+	uint				r51;
+	uint				r52;
+	uint				r53;
+	uint				r54;
+	uint				r55;
+	uint				r56;
+	uint				r57;
+	uint				r58;
+	uint				r59;
+	uint				r5a;
+	uint				r5b;
+	uint				r5c;
+	uint				r5d;
+	uint				r5e;
+	uint				r5f;
+	uint				r60;
+	uint				r61;
+	uint				r62;
+	uint				r63;
+}	readAdRegStatus;
+
+extern	struct	adChHeader
+{
+	uchar				Ch0;
+	uchar				Ch1;
+	uchar				Ch2;
+	uchar				Ch3;
+	uchar				Ch4;
+	uchar				Ch5;
+	uchar				Ch6;
+	uchar				Ch7;
+
+	uchar				Ch0ERR;
+	uchar				Ch1ERR;
+	uchar				Ch2ERR;
+	uchar				Ch3ERR;
+	uchar				Ch4ERR;
+	uchar				Ch5ERR;
+	uchar				Ch6ERR;
+	uchar				Ch7ERR;
+}	adChHeader;
+
+extern	struct	SDCard
+{
+	uchar	Type;
+	uint	DetCnt;
+	uchar	DetSts;
+//	uint	WPCnt;
+//	uchar	WPSts;
+	uchar	Err_Flag;
+	uchar	Speed;												// LowSpeed:0/HighSpeed:1
+} SDCard;
+extern	ulong	sdFileCount;
+extern	uchar	sdReg_buffer[16];
+extern	ulong	sd_sectors;
+extern	ulong	sdMaxSectors;
+extern	void*	sdPointer;
+extern	uint	sdStep;
+extern	uint	sdSubStep;
+extern	uint	sdStatusStep;
+extern	uint	testSDStatus;
+extern	uint	writeSDStatus;
+extern	uint	writeSDStatusChk;
+extern	uint	writeSDDMAStatus;
+extern	uint	writeSDBusyChk;
+extern	uint	writeSDBusyCnt;
+extern	uint	readSDStatus;
+extern	uint	readSDExe;
+extern	uint	readSDCount;
+extern	uint	readSDDMAStatus;
+extern	uint	readSDBusyChk;
+extern	uint	readSDBusyCnt;
+extern	uint	readSDStartAdr;
+extern	uint	readSDLength;
+extern	uint	readSDAdr;
+
+extern	uint	writeSDExe;
+extern	uint	writeUSBExe;
+extern	uint	writeUSBEnd;
+
+extern	ulong	sdCount;
+extern	ulong	testCount;
+extern	ulong	testSDCount;									//test1204
+extern	ulong	testADCount;									//test1204
+extern	ulong	sramSaveCount;
+extern	ulong	sramLoadCount;
+extern	ulong	sramLoadOK;
+extern	ulong	testData;
+extern	uchar	testDataH;
+extern	uchar	testDataL;
+extern	uint	testFlag;										//test0612
+extern	ulong	testUsbData;
+extern	uint	testSRAMRead;
+extern	uint	testSRAMWrite;
+
+extern	uint	keyCount;
+extern	uchar	dataEnable;
+
+extern	uint	txCount;
+extern	uint	txData;
+
+extern	uchar	dumData;
+extern	uchar	dummyTX;
+extern	uchar	dummyRX;
+
+extern	uchar	sdCardResetCMD[6];
+extern	uchar	sdCardInitCMD[6];
+extern	uchar	sdCardSelectCMD[6];
+extern	uchar	sdCardOSRCMD[6];
+extern	uchar	sdCardCIDCMD[6];
+
+extern	uchar	sdOSRBuf[4];
+extern	uchar	sdCIDBuf[16];
+
+extern	uchar	DUMMY_DMA;
+extern	uchar	ADC_CS;											/* P6.2 is AD Chip Select */
+
+extern	uchar	sdErrStatus;
+extern	uchar	adErrStatus;
+extern	uchar	usbErrStatus;
+extern	uchar	sramErrStatus;
+extern	uchar	adErrRetry;
+
+extern	uint	enco_adpcm_val;
+extern	uint	deco_adpcm_val;
+extern	int		bits_per_code;
+extern	signed int	PrevSample;									// Predicted sample
+extern	int		 PrevStepSize;									// Index into step size table
+
+extern	uchar	respSave;
+//extern	uint	statusCode;
+extern	uchar	statusCode;
+extern	uint	clockCount;
+extern	uint	clockCountOld;
+extern	uint	capCount;
+extern	uint	capCountOld;
+extern	uint	calCount;
+
+extern	uchar	listNo;
+extern	uint	listCount;
+extern	uchar	listWork[14];
+extern	uint	dataNo;
+extern	uint	polarityFlag;
+

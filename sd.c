@@ -389,7 +389,7 @@ void	sdSendCmd(const uchar cmd, ulong data, const char crc)
 	uchar	temp;
 	uint	i;
 
-	frame[0]=(char)(cmd|0x40);
+	frame[0]=(char)(0x40 | cmd);
 	for(i = 1; i <= 4; i++)
 	{
 		temp=(char)(data>>(8*(4-i)));
@@ -1097,13 +1097,44 @@ uchar	sdInitSub(void)
 	}
 }
 
+//http://elm-chan.org/docs/mmc/mmc.html
+/////////////////////////////////////////////////////
+/* http://hy30.hatenablog.com/
+(A)ダミークロック送信
+	電源を入れた後1ms以上待ち、74クロック以上のダミークロックを送る
+(B)CMD0の送信(ＭＭＣ・リセット)
+	この時点ではSDモードの為、CRC必須, CS=0, CMD0の応答はR1(0x00)でOK！
+(C)CMD8の送信(電源電圧の確認）．
+	動作電圧をサポートしているか、ファイルシステムのバージョンチェック．
+	19～16bitで対応電圧を入れる"0001":2.7～3.6Vで、その他は未定義or予約．
+	15～8bitでチェックパターン"10101010"を推奨．
+	以上より、"0x48 000001AA 87"がCMD8．
+	レスポンスR7を確認．下12bitが"0x1AA"で帰ってきていればＯＫ．
+(D)ACMD41の送信(SDカード初期化)
+	ACMDはアプリケーションスペシフィックコマンドの略．
+	CMD55を送信後にR1を受け取った後、CMD41を送信
+	CMD55:0x77 0000 0000 65
+	CMD44:0x69 4000 0000 77
+	下8bitはCCRで、CMD8後なので実際は不要．FFでもＯＫ
+	CMD44の38bit目はSDHC(SD ハイキャパシティ)を有効にするビット
+
+ACMD41で帰ってくるR3の38bit目がCCS(カードキャパシティステータス)のレスポンスビット．
+CCSが1ならSDXC,SDHC,0なら2GByte以下のSDカードとわかる．
+
+(E)CMD9の送信
+    SDカードからの情報を読み書きする前に、セクタサイズ、SD容量などの必要情報(CSD)を調べ、
+    SPIモードへのイニシャル操作完了とする．
+        レスポンス(CSD情報)は、8byteで構成されている．
+*/
+//////////////////////////////////////////////////////////////
 uchar	sdInit(void)
 {
 	uint	i;
 	uint	CMD1_counter = 0x00;
 	uchar	response = 0x01;
 	uchar	reply = 0;
-
+	/////////////////////////////////////////
+	////////// (A)  ////////////////////////
 	SD_NSS_High;
 	delay100us();
 	for(i = 0; i < 10; i++)
@@ -1111,17 +1142,23 @@ uchar	sdInit(void)
 		sdSendByte(0xff);
 	}
 	delay100us();
+	//////////////////////////////
+	/////////// (B) //////////////
 	SD_NSS_Low;
 	sdSendCmd(0,0,0x95);
 	reply = sdGetResponseCMD();									// 
-	if(reply == 0xFF)	return SD_INIT_FAIL;					// Response error
-	sdSendCmd(8,0x000001AA,0x87);								// 
+	//if(reply == 0xFF)	return SD_INIT_FAIL;					// Response error
+	if(reply != 0x00)
+	    return SD_INIT_FAIL;			                		// Response error
+	/////////////////////////////
+	////////// (C)  /////////////
+	sdSendCmd(8,0x000001AA,0x87);
 	reply = sdGetResponseCMD8();
-	if(reply == ERROR)
-	{
+	if(reply == ERROR){
 		return 2;												// Response error
 	}
-	if(reply == SDDET)	goto SD_CARD;							// Response
+	if(reply == SDDET)
+	    goto SD_CARD;               							// Response
 	//SDHC_CARD
 	sdSendCmd(58,0,0xFD);										// 
 	reply = sdGetResponseCMD58();
@@ -1166,7 +1203,8 @@ SD_CARD:
 void	initSd(void)
 {
 	uchar	reply;
-
+	//spi data rete must be 100k~400kbps
+	//sdSpeedLowSet(); >> 200kpbs
 	sdSpeedLowSet();											// SD Card Low Speed
 
 	reply = sdInit();

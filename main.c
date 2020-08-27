@@ -947,7 +947,7 @@ void main(void)
 	initFlash();
 	initPort();
 	initSpi();
-	initADCSet();
+//	initADCSet();
 	initTimer();
 	initSd();
 	if(SDCard.Err_Flag == NG)
@@ -994,7 +994,7 @@ void main(void)
 //		timeSyncOut();
 //		sramSaveCtr();
 //		sramLoadCtr();
-//		sdWriteCtr();
+		sdWriteCtr();
 //		usbDMASend();
 //		usbSend();
 		if(eventTime01MS) {

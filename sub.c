@@ -1001,7 +1001,7 @@ void	sdWriteCtr(void)
 		if(sdStart == ON)
 		{
 #if 1
-ledD2On();
+			ledD2On();
 			switch(sdStep)
 			{
 				case	STEP0:

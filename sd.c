@@ -440,10 +440,14 @@ uchar	sdGetResponseCMD8(void)
 	uint	retry = 0;
 	uchar	reply = 0;
 	uchar	response = ERROR;
-	uchar	responsebuf[5];
+	uchar	k[7];
+	
+	for(i=0;i<=6;i++)
+	    k[i]=0x00;
 
 	while(retry <= 64)
 	{
+		/*
 		reply = sdSendByte(0xFF);
 		if(reply == 0x05)										// SD = ILLEGAL_CMD+BUSY?
 		{
@@ -466,9 +470,24 @@ uchar	sdGetResponseCMD8(void)
 		{
 			responsebuf[0] = reply;
 		}
+		*/
+		k[0] = k[1];
+		k[1] = k[2];
+		k[2] = k[3];
+		k[3] = k[4];
+		k[4] = k[5];
+		k[5] = k[6];
+		k[6] = sdSendByte(0xFF);
+		//if response is R7 
+		//39~32bit : R1 response / 11~8bit : Ý’è“dˆ³(CMD8Žž) / 7~0bit: 
+		//if(k[0]==0x00 & k[3]==0x01 & k[4]==0xAA){
+		if(k[2] != 0x00){ //1bit‚¸‚ê‚Ä‚¢‚é‚¯‚Ç‚±‚ê‚¶‚á‚È‚¢‚ÆAif•¶‚ª”FŽ¯‚µ‚Ä‚­‚ê‚È‚¢„„–¾‚ç‚©‚É‚¨‚©‚µ‚¢‚Å‚·
+			response = SDHC;
+	//		break;
+		}
 		retry++;
 	}
-	sdSendByte(0xFF);
+//	sdSendByte(0xFF);
 	return response;
 }
 
@@ -1157,8 +1176,10 @@ uchar	sdInit(void)
 	if(reply == ERROR){
 		return 2;												// Response error
 	}
-	if(reply == SDDET)
-	    goto SD_CARD;               							// Response
+//	if(reply == SDDET)
+//	    goto SD_CARD;               							// Response
+	///////////////////////////////////////
+	///////////// (D)  ////////////////////
 	//SDHC_CARD
 	sdSendCmd(58,0,0xFD);										// 
 	reply = sdGetResponseCMD58();
